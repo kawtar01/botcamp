@@ -1,0 +1,27 @@
+{
+  "name": "acronymous",
+  "version": "1.0.0",
+  "description": "bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "\"echo\\\"hi\"\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvrXXI/acronymous.git"
+  },
+  "keywords": [
+    "bots"
+  ],
+  "author": "acronymous",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jvrXXI/acronymous/issues"
+  },
+  "homepage": "https://github.com/jvrXXI/acronymous#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "request": "^2.81.0"
+  }
+}
