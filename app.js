@@ -66,6 +66,7 @@ function sendMessage(event) {
   let text = event.message.text;
   var title ='';
   var subtitle='';
+  var img ='https://lh3.ggpht.com/Lt19unBfmJB9QU7DpKqXdlx_zs_zhpcOlLpSY40F_NoPmyZxabk029y7FAV9lFvqEzM=w300';
   let apiai = apiaiApp.textRequest(text, {
     sessionId: 'tabby_cat'
   });
@@ -75,6 +76,7 @@ function sendMessage(event) {
     var acronym = response.result.parameters.acronym;
     if( acronym === 'DIL'){
         title = 'Data Innovation Lab';
+        img = 'https://avatars2.githubusercontent.com/u/7920576?v=3&s=200';
     }
     else if(acronym === 'AGPC'){
         title = 'AXA Global Property and Casuality';
@@ -123,7 +125,7 @@ function sendMessage(event) {
 			    "elements": [{
 					"title": title,
 				    "subtitle": subtitle,
-				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+				    "image_url": img,
 				    "buttons": [{
 					    "type": "web_url",
 					    "url": "https://www.messenger.com",
