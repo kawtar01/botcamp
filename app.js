@@ -207,7 +207,7 @@ function sendMessage(event) {
 				    },
                     {
 					    "type": "postback",
-					    "title": "Who's in charge",
+					    "title": "Head of "+acronym+"?",
 					    "payload": detail,
 				    }
                     ],
