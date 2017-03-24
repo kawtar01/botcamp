@@ -48,12 +48,10 @@ function processDetail(event,detailInfo) {
    console.log('process details');
    let sender = event.sender.id;
     var title ='';
-    var img ='https://lh3.ggpht.com/Lt19unBfmJB9QU7DpKqXdlx_zs_zhpcOlLpSY40F_NoPmyZxabk029y7FAV9lFvqEzM=w300';
     var subtitle='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis vestibulum est, sed tristique diam ullamcorper vitae. Morbi porttitor sit amet nisi nec gravida. Nulla blandit est eu mattis pulvinar. Aliquam blandit facilisis aliquam. Etiam cursus eu justo in ornare. Donec egestas nec erat non tincidunt. Vivamus molestie iaculis arcu vel ornare. Aliquam erat volutpat. Nullam blandit nec mauris et eleifend. Pellentesque rhoncus orci vel neque rhoncus, vitae condimentum leo tincidunt. Curabitur semper risus eget lacinia sodales. Nulla ut justo tristique, vulputate ex non, tristique libero.';
     var acronym = detailInfo;
     if( acronym === 'DIL'){
-        title = 'Data Innovation Lab';
-        img = 'https://avatars2.githubusercontent.com/u/7920576?v=3&s=200';
+        title = 'Karim Bouchema';
         subtitle= 'The Data Innovation Lab of AXA, based in Suresnes, brings together 70 people, experts and Big Data consultants.'
     }
   
@@ -100,18 +98,6 @@ function processDetail(event,detailInfo) {
 			    "elements": [{
 					"title": title,
 				    "subtitle": subtitle,
-				    "image_url": img,
-				    "buttons": [{
-					    "type": "web_url",
-					    "title": "Contact",
-					    "url": "https://en.wikipedia.org/wiki/Minions_(film)",
-				    },
-                    {
-					    "type": "web_url",
-					    "title": "Website",
-					    "url": "http://www.minionsmovie.com/minions.html",
-				    }
-                    ],
 			    }
                 ]
 		    }
@@ -145,7 +131,7 @@ function sendMessage(event) {
   let text = event.message.text;
   
   var title ='';
-  var subtitle='';
+  var subtitle='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis vestibulum est, sed tristique diam ullamcorper vitae. Morbi porttitor sit amet nisi nec gravida. Nulla blandit est eu mattis pulvinar. Aliquam blandit facilisis aliquam. Etiam cursus eu justo in ornare. Donec egestas nec erat non tincidunt. Vivamus molestie iaculis arcu vel ornare. Aliquam erat volutpat. Nullam blandit nec mauris et eleifend. Pellentesque rhoncus orci vel neque rhoncus, vitae condimentum leo tincidunt. Curabitur semper risus eget lacinia sodales. Nulla ut justo tristique, vulputate ex non, tristique libero.';
   var detail ='DETAIL_';
   var img ='https://lh3.ggpht.com/Lt19unBfmJB9QU7DpKqXdlx_zs_zhpcOlLpSY40F_NoPmyZxabk029y7FAV9lFvqEzM=w300';
   let apiai = apiaiApp.textRequest(text, {
@@ -157,7 +143,8 @@ function sendMessage(event) {
     var acronym = response.result.parameters.acronym;
     if( acronym === 'DIL'){
         title = 'Data Innovation Lab';
-        img = 'https://avatars2.githubusercontent.com/u/7920576?v=3&s=200';
+        subtitle= 'The Data Innovation Lab of AXA, based in Suresnes, brings together 70 people, experts and Big Data consultants.'
+   
     }
   
     else if(acronym === 'AGPC'){
@@ -208,12 +195,22 @@ function sendMessage(event) {
 			    "elements": [{
 					"title": title,
 				    "subtitle": subtitle,
-				    "image_url": img,
 				    "buttons": [{
+					    "type": "web_url",
+					    "title": "Contact",
+					    "url": "https://en.wikipedia.org/wiki/Minions_(film)",
+				    },
+                    {
+					    "type": "web_url",
+					    "title": "Website",
+					    "url": "http://www.minionsmovie.com/minions.html",
+				    },
+                    {
 					    "type": "postback",
-					    "title": "More info",
+					    "title": "Who's in charge",
 					    "payload": detail,
-				    }],
+				    }
+                    ],
 			    }
                 ]
 		    }
