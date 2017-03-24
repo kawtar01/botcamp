@@ -27,12 +27,16 @@ app.get('/webhook', (req, res) => {
 
 /* Handling all messenges */
 app.post('/webhook', (req, res) => {
-  console.log(req.body);
+  console.log('PAPAYA',req.body.entry[0].messaging);
   if (req.body.object === 'page') {
     req.body.entry.forEach((entry) => {
       entry.messaging.forEach((event) => {
         if (event.message && event.message.text) {
           sendMessage(event);
+        }
+        else if(event.postback.payload.indexOf('DETAIL')>-1){
+            var detailInfo = event.postback.payload.split('_')[1];
+            processDetail(event,detailInfo);
         }
       });
     });
@@ -40,44 +44,122 @@ app.post('/webhook', (req, res) => {
   }
 });
 
-/*function sendMessage(event) {
-  let sender = event.sender.id;
-  let text = event.message.text;
+function processDetail(event,detailInfo) {
+   console.log('process details');
+   let sender = event.sender.id;
+    var title ='';
+    var img ='https://lh3.ggpht.com/Lt19unBfmJB9QU7DpKqXdlx_zs_zhpcOlLpSY40F_NoPmyZxabk029y7FAV9lFvqEzM=w300';
+    var subtitle='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis vestibulum est, sed tristique diam ullamcorper vitae. Morbi porttitor sit amet nisi nec gravida. Nulla blandit est eu mattis pulvinar. Aliquam blandit facilisis aliquam. Etiam cursus eu justo in ornare. Donec egestas nec erat non tincidunt. Vivamus molestie iaculis arcu vel ornare. Aliquam erat volutpat. Nullam blandit nec mauris et eleifend. Pellentesque rhoncus orci vel neque rhoncus, vitae condimentum leo tincidunt. Curabitur semper risus eget lacinia sodales. Nulla ut justo tristique, vulputate ex non, tristique libero.';
+    var acronym = detailInfo;
+    if( acronym === 'DIL'){
+        title = 'Data Innovation Lab';
+        img = 'https://avatars2.githubusercontent.com/u/7920576?v=3&s=200';
+        subtitle= 'The Data Innovation Lab of AXA, based in Suresnes, brings together 70 people, experts and Big Data consultants.'
+    }
+  
+    else if(acronym === 'AGPC'){
+        title = 'AXA Global Property and Casuality';
+    }
+    else if(acronym === 'IAM'){
+        title = 'Identity Access Management';
+    }
+    else if(acronym === 'MAG'){
+        title = 'Mobile Application Guidelines';
+    }
+    else if(acronym === 'RUOK'){
+        title = 'Are U OK';
+    }
+    else if(acronym === 'BAU'){
+        title = 'Business As Usual';
+    }
+    else if(acronym === 'FTE'){
+        title = 'Full Time Equivalent';
+    }
+    else if(acronym === 'ISR'){
+        title = 'Internal Security Review';
+    }
+    else if(acronym === 'LS'){
+        title = 'Life & Svaings';
+    }
+    else if(acronym === 'SLA'){
+        title = 'Service Level Agreement';
+    }
+    else if(acronym === 'Steerco'){
+        title = 'Steering Comitee';
+    }
+    else if(acronym === 'MC'){
+        title = 'Management Comitee';
+    }
+   
+ 
+    let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "generic",
+			    "elements": [{
+					"title": title,
+				    "subtitle": subtitle,
+				    "image_url": img,
+				    "buttons": [{
+					    "type": "web_url",
+					    "title": "Contact",
+					    "url": "https://en.wikipedia.org/wiki/Minions_(film)",
+				    },
+                    {
+					    "type": "web_url",
+					    "title": "Website",
+					    "url": "http://www.minionsmovie.com/minions.html",
+				    }
+                    ],
+			    }
+                ]
+		    }
+	    }
+    }
+  
+    request({
+      url: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: {access_token: PAGE_ACCESS_TOKEN},
+      method: 'POST',
+      json: {
+        recipient: {id: sender},
+        message: messageData
+      }
+    }, (error, response) => {
+      if (error) {
+          console.log('Error sending message: ', error);
+      } else if (response.body.error) {
+          console.log('Error: ', response.body.error);
+      }
+    });
 
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token: PAGE_ACCESS_TOKEN},
-    method: 'POST',
-    json: {
-      recipient: {id: sender},
-      message: {text: text}
-    }
-  }, function (error, response) {
-    if (error) {
-        console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-        console.log('Error: ', response.body.error);
-    }
-  });
-}*/
+
+
+}
+
+
 
 function sendMessage(event) {
   let sender = event.sender.id;
   let text = event.message.text;
+  
   var title ='';
   var subtitle='';
+  var detail ='DETAIL_';
   var img ='https://lh3.ggpht.com/Lt19unBfmJB9QU7DpKqXdlx_zs_zhpcOlLpSY40F_NoPmyZxabk029y7FAV9lFvqEzM=w300';
   let apiai = apiaiApp.textRequest(text, {
     sessionId: 'tabby_cat'
   });
 
   apiai.on('response', (response) => {
-    console.log('LOL: ',response);
+    
     var acronym = response.result.parameters.acronym;
     if( acronym === 'DIL'){
         title = 'Data Innovation Lab';
         img = 'https://avatars2.githubusercontent.com/u/7920576?v=3&s=200';
     }
+  
     else if(acronym === 'AGPC'){
         title = 'AXA Global Property and Casuality';
     }
@@ -117,6 +199,7 @@ function sendMessage(event) {
     else{
         text = "I'm not trained for that yet :(";
     }
+    detail = detail + acronym;
     let messageData = {
 	    "attachment": {
 		    "type": "template",
@@ -127,13 +210,9 @@ function sendMessage(event) {
 				    "subtitle": subtitle,
 				    "image_url": img,
 				    "buttons": [{
-					    "type": "web_url",
-					    "url": "https://www.messenger.com",
-					    "title": "web url"
-				    }, {
 					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Payload for first element in a generic bubble",
+					    "title": "More info",
+					    "payload": detail,
 				    }],
 			    }
                 ]
