@@ -52,7 +52,7 @@ function processDetail(event,detailInfo) {
     var acronym = detailInfo;
     if( acronym === 'DIL'){
         title = 'Karim Bouchema';
-        subtitle= 'The Data Innovation Lab of AXA, based in Suresnes, brings together 70 people, experts and Big Data consultants.'
+        subtitle= 'Is born in 1970';
     }
   
     else if(acronym === 'AGPC'){
@@ -143,7 +143,7 @@ function sendMessage(event) {
     var acronym = response.result.parameters.acronym;
     if( acronym === 'DIL'){
         title = 'Data Innovation Lab';
-        subtitle= 'The Data Innovation Lab of AXA, based in Suresnes, brings together 70 people, experts and Big Data consultants.'
+        subtitle= "Is based in Suresnes, brings together 70 data experts";
    
     }
   
