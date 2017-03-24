@@ -70,8 +70,21 @@ function sendMessage(event) {
   });
 
   apiai.on('response', (response) => {
-    console.log(response)
-    let aiText = response.result.fulfillment.speech;
+    console.log('LOL: ',response);
+    var acronym = response.result.parameters.acronym;
+    if( acronym === 'DIL'){
+        text = 'Data innovation Lab';
+    }
+    else if(acronym === 'AGPC'){
+        text = 'AXA Global Property and Casuality';
+    }
+    else if(acronym === 'IAM'){
+        text = 'Identity Access Management';
+    }
+    else{
+        text = "I'm not trained for that yet :(";
+    }
+    
 
     request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -79,7 +92,7 @@ function sendMessage(event) {
       method: 'POST',
       json: {
         recipient: {id: sender},
-        message: {text: aiText}
+        message: {text: text}
       }
     }, (error, response) => {
       if (error) {
