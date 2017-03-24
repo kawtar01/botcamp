@@ -64,7 +64,8 @@ app.post('/webhook', (req, res) => {
 function sendMessage(event) {
   let sender = event.sender.id;
   let text = event.message.text;
-
+  var title ='';
+  var subtitle='';
   let apiai = apiaiApp.textRequest(text, {
     sessionId: 'tabby_cat'
   });
@@ -73,13 +74,40 @@ function sendMessage(event) {
     console.log('LOL: ',response);
     var acronym = response.result.parameters.acronym;
     if( acronym === 'DIL'){
-        text = 'Data innovation Lab';
+        title = 'Data Innovation Lab';
     }
     else if(acronym === 'AGPC'){
-        text = 'AXA Global Property and Casuality';
+        title = 'AXA Global Property and Casuality';
     }
     else if(acronym === 'IAM'){
-        text = 'Identity Access Management';
+        title = 'Identity Access Management';
+    }
+    else if(acronym === 'MAG'){
+        title = 'Mobile Application Guidelines';
+    }
+    else if(acronym === 'RUOK'){
+        title = 'Are U OK';
+    }
+    else if(acronym === 'BAU'){
+        title = 'Business As Usual';
+    }
+    else if(acronym === 'FTE'){
+        title = 'Full Time Equivalent';
+    }
+    else if(acronym === 'ISR'){
+        title = 'Internal Security Review';
+    }
+    else if(acronym === 'LS'){
+        title = 'Life & Svaings';
+    }
+    else if(acronym === 'SLA'){
+        title = 'Service Level Agreement';
+    }
+    else if(acronym === 'Steerco'){
+        title = 'Steering Comitee';
+    }
+    else if(acronym === 'MC'){
+        title = 'Management Comitee';
     }
     else if(_.isEmpty(response.result.parameters) && response.result.action ==='input.welcome'){
         text = response.result.fulfillment.speech;
@@ -87,15 +115,39 @@ function sendMessage(event) {
     else{
         text = "I'm not trained for that yet :(";
     }
-    
-
+    let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "generic",
+			    "elements": [{
+					"title": title,
+				    "subtitle": subtitle,
+				    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+				    "buttons": [{
+					    "type": "web_url",
+					    "url": "https://www.messenger.com",
+					    "title": "web url"
+				    }, {
+					    "type": "postback",
+					    "title": "Postback",
+					    "payload": "Payload for first element in a generic bubble",
+				    }],
+			    }
+                ]
+		    }
+	    }
+    }
+   if(_.isEmpty(title)){
+       messageData = {text:text};
+   }
     request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
       qs: {access_token: PAGE_ACCESS_TOKEN},
       method: 'POST',
       json: {
         recipient: {id: sender},
-        message: {text: text}
+        message: messageData
       }
     }, (error, response) => {
       if (error) {
