@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
-
+const _ = require('lodash');
 const CLIENT_ACCESS_TOKEN="9032b2108216477788e5b48de04905a8";
 
 const apiai = require('apiai');
@@ -80,6 +80,9 @@ function sendMessage(event) {
     }
     else if(acronym === 'IAM'){
         text = 'Identity Access Management';
+    }
+    else if(_.isEmpty(response.result.parameters) && response.result.action ==='input.welcome'){
+        text = response.result.fulfillment.speech;
     }
     else{
         text = "I'm not trained for that yet :(";
