@@ -197,12 +197,12 @@ function sendMessage(event) {
 				    "subtitle": subtitle,
 				    "buttons": [{
 					    "type": "web_url",
-					    "title": "Contact",
+					    "title": "Contact the "+acronym,
 					    "url": "https://en.wikipedia.org/wiki/Minions_(film)",
 				    },
                     {
 					    "type": "web_url",
-					    "title": "Website",
+					    "title": "Visit "+acronym+"'s website",
 					    "url": "http://www.minionsmovie.com/minions.html",
 				    },
                     {
